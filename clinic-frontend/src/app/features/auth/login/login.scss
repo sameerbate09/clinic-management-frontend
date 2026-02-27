@@ -1,0 +1,79 @@
+/* Outer wrapper to prevent stretching */
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Container */
+.login-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Card */
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 2rem;
+  border-radius: 16px;
+}
+
+/* Brand section */
+.brand-section {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #2b69e1;
+
+  .logo-icon {
+    font-size: 40px;
+    display: block;
+    margin: 0 auto 8px auto;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+  }
+}
+
+/* Center title */
+mat-card-header {
+  display: block;
+  text-align: center;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  font-size: 14px;
+
+  .forgot-link {
+    text-decoration: none;
+    color: #2b69e1;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.login-button {
+  width: 100%;
+  height: 48px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-radius: 8px;
+}
