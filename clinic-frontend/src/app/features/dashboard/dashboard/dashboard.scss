@@ -4,88 +4,45 @@
   --primary-blue: #4387e7;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+.main-content {
+  padding: 16px;
+}
+
 .admin-container {
   height: 100vh;
-  background-color: var(--bg-light);
-  overflow: hidden;
+  // background-color: var(--bg-light);
+  // overflow: hidden;
 }
 
 .sidebar {
   width: var(--sidebar-width);
-  height: 100vh; // 🔥 important
-  background: var(--primary-blue);
-  color: white;
+  background-color: var(--primary-blue) !important;
+  color: rgb(255, 255, 255);
   border: none;
+
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  height: 100%;
+}
 
-  .logo-section {
-    padding: 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
+mat-sidenav-content {
+  overflow: auto;
+}
 
-  html,
-  body {
-    height: 100%;
-    margin: 0;
-    overflow-x: hidden;
-  }
+.sidebar mat-nav-list {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 4px 12px;
+  border-radius: 8px
+}
 
-  mat-nav-list {
-    flex: 1;
-    overflow-y: auto; // scroll only if needed
-    overflow-x: hidden;
-  }
-
-  mat-nav-list a {
-    color: rgba(255, 255, 255, 0.7);
-    margin: 4px 16px;
-    border-radius: 8px;
-
-    mat-icon {
-      margin-right: 12px;
-    }
-
-    &.active {
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
-    }
-  }
-
-  .user-profile {
-    margin-top: auto;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(0, 0, 0, 0.1);
-
-    img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-    }
-
-    .user-info {
-      display: flex;
-      flex-direction: column;
-
-      .name {
-        font-size: 14px;
-        font-weight: 500;
-      }
-
-      .role {
-        font-size: 12px;
-        opacity: 0.7;
-      }
-    }
-  }
+mat-nav-list a mat-icon {
+  margin-right: 16px;
 }
 
 .main-content {
@@ -170,6 +127,30 @@
   }
 }
 
+.user-profile {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.1);
+  margin-top: auto;
+}
+
+.user-profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.logo-section {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+
 .table-card {
   border-radius: 16px;
   overflow: hidden;
@@ -223,16 +204,9 @@
     color: #888;
   }
 
-  .sidebar {
-    overflow: hidden !important;
-  }
-
-  mat-sidenav {
-    overflow: hidden !important;
-  }
-
   .admin-container {
     height: 100vh;
+    background-color: var(--bg-light);
   }
 
   .card-footer {
@@ -304,5 +278,23 @@ table {
       background: #fff0f6;
       color: #f06292;
     }
+  }
+}
+
+// Responsive adjustments
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+@media (max-width: 1200px) {
+  .summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .summary-grid {
+    grid-template-columns: 1fr;
   }
 }
