@@ -44,7 +44,7 @@ export class Login {
     this.authService.login(this.loginForm.value as any).subscribe({
       next: () => {
         this.toastr.success('Login successful');
-        this.router.navigate(['/patients']);
+        this.router.navigate(['/dashboard']);
       },
       error: () => {
         this.toastr.error('Invalid username or password');
