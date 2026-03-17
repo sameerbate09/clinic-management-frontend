@@ -1,0 +1,116 @@
+<div class="form-container">
+    <div class="header-section">
+        <div class="breadcrumb">
+            <mat-icon>arrow_back</mat-icon>
+            <span>Patients / <b>Add Patient</b></span>
+        </div>
+        <div class="title-row">
+            <h2>Add Patient</h2>
+        </div>
+    </div>
+
+    <mat-card class="form-card">
+        <form class="patient-form">
+            <section class="form-section">
+                <h3 class="section-title">Basic Information</h3>
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label>Full Name *</label>
+                        <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                            <input matInput placeholder="Enter full name">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Gender *</label>
+                        <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                            <mat-select placeholder="Select gender">
+                                <mat-option value="male">Male</mat-option>
+                                <mat-option value="female">Female</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Date of Birth *</label>
+                        <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                            <input matInput [matDatepicker]="picker" placeholder="DD-MM-YYYY">
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Mobile *</label>
+                        <div class="mobile-input-group">
+                            <mat-form-field appearance="fill" class="country-code" subscriptSizing="dynamic">
+                                <mat-select value="+91">
+                                    <mat-option value="+91">+91</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="phone-number" subscriptSizing="dynamic">
+                                <input matInput placeholder="10 digit number">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Email *</label>
+                        <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                            <input matInput placeholder="example@email.com">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Email</label>
+                        <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                            <input matInput placeholder="example@email.com">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Blood Group *</label>
+                        <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                            <mat-select placeholder="Select blood group">
+                                <mat-option value="a+">A+</mat-option>
+                                <mat-option value="o+">O+</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="section-divider">
+
+            <section class="form-section">
+                <h3 class="section-title">Address (Optional)</h3>
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label>Address</label>
+                        <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                            <input matInput placeholder="Enter address">
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field">
+                        <label>City</label>
+                        <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                            <input matInput placeholder="Enter city">
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field">
+                        <label>Pin Code</label>
+                        <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                            <input matInput placeholder="Enter pin code">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </section>
+
+            <div class="form-actions">
+                <button mat-flat-button color="primary" class="btn-submit">Add Patient</button>
+                <button mat-stroked-button class="btn-cancel">Cancel</button>
+            </div>
+
+        </form>
+    </mat-card>
+</div>

@@ -1,0 +1,115 @@
+// Custom Variables to match Figma Palette
+$bg-color: #f8faff;
+$card-border: #e0e6ed;
+$text-main: #1a1c1e;
+$text-secondary: #44474e;
+$male-blue: #3b82f6;
+$female-pink: #ec4899;
+
+.patient-container {
+  padding: 24px;
+  background-color: $bg-color;
+  min-height: 100vh;
+  font-family: 'Roboto', sans-serif;
+
+  .header-row {
+    margin-bottom: 24px;
+    .page-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: $text-main;
+      margin: 0;
+    }
+  }
+}
+
+.patient-grid {
+  display: grid;
+  // Grid: 3 columns for desktop, 1 or 2 for mobile
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.patient-card {
+  border-radius: 12px !important;
+  border: 1px solid $card-border !important;
+  background: #ffffff;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  mat-card-content {
+    padding: 20px !important;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+
+    .avatar-container {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      mat-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+      }
+
+      &.male {
+        background-color: rgba($male-blue, 0.1);
+        color: $male-blue;
+      }
+
+      &.female {
+        background-color: rgba($female-pink, 0.1);
+        color: $female-pink;
+      }
+    }
+
+    .patient-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: $text-main;
+      margin: 0;
+    }
+  }
+
+  .info-group {
+    margin-bottom: 24px;
+    
+    p {
+      margin: 4px 0;
+      font-size: 14px;
+      color: $text-main;
+      
+      .label {
+        color: $text-secondary;
+        font-weight: 400;
+      }
+    }
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 12px;
+
+    .action-btn {
+      flex: 1;
+      border-radius: 6px;
+      font-weight: 500;
+      text-transform: none;
+      height: 36px;
+      border-color: $card-border;
+    }
+  }
+}

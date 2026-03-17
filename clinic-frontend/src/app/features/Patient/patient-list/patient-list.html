@@ -1,0 +1,30 @@
+<div class="patient-container">
+  <div class="header-row">
+    <h1 class="page-title">Patient List</h1>
+  </div>
+
+  <div class="patient-grid">
+    @for (patient of patientsList$ | async; track $index) {
+      <mat-card class="patient-card" appearance="outlined">
+        <mat-card-content>
+          <div class="card-header">
+            <div class="avatar-container" [ngClass]="patient.gender.toLowerCase().trim()">
+              <mat-icon>{{  patient.gender.toLowerCase().trim() === 'male' ? 'person' : 'face_3' }}</mat-icon>
+            </div>
+            <h2 class="patient-name">{{ patient.name }}</h2>
+          </div>
+
+          <div class="info-group">
+            <p><span class="label">Age:</span> {{ patient.age }}</p>
+            <p><span class="label">Contact:</span> {{ patient.mobile }}</p>
+          </div>
+
+          <div class="card-actions">
+            <button mat-stroked-button color="primary" class="action-btn">View Details</button>
+            <button mat-stroked-button class="action-btn">Edit</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+</div>

@@ -1,0 +1,86 @@
+:host {
+  --sidebar-width: 240px;
+  --bg-light: #f4f7fe;
+  --primary-blue: #4387e7;
+}
+
+.admin-container {
+  height: 100vh;
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--primary-blue) !important;
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+
+  mat-nav-list a {
+    border-radius: 8px;
+    transition: background 0.2s ease;
+  }
+
+  .mdc-list-item__primary-text,
+  .mat-mdc-list-item-unscoped-content {
+    color: white !important;
+  }
+
+  mat-icon {
+    color: white !important;
+    margin-right: 16px;
+  }
+
+  mat-nav-list a:hover {
+    background: rgb(170, 242, 255);
+  }
+}
+
+.sidebar mat-nav-list {
+  flex: 1;
+  overflow-y: auto;
+  margin: 4px 12px;
+  border-radius: 8px;
+}
+
+.logo-section {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-profile {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0,0,0,0.1);
+  margin-top: auto;
+}
+
+.user-profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.main-content {
+  background-color: var(--bg-light);
+}
+
+.top-header {
+  background: white;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.add-patient-btn {
+  border-radius: 8px;
+}
+

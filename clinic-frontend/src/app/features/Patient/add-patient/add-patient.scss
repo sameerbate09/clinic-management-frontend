@@ -1,0 +1,118 @@
+// Custom Variables to match M3 Palette in the image
+$bg-light: #f4f7fe;
+$label-color: #444;
+$input-bg: #f8faff;
+$primary-blue: #2d62ed;
+
+.form-container {
+  padding: 24px;
+  background-color: $bg-light;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+
+  .header-section {
+    margin-bottom: 24px;
+    
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 16px;
+      mat-icon { font-size: 18px; width: 18px; height: 18px; cursor: pointer; }
+    }
+
+    h2 { margin: 0; font-size: 24px; font-weight: 600; color: #1a1a1a; }
+  }
+}
+
+.form-card {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+  padding: 32px;
+  background: #fff;
+}
+
+.form-section {
+  margin-bottom: 24px;
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    color: #333;
+  }
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); // 2 columns as per image
+  gap: 20px 40px;
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    label {
+      font-size: 14px;
+      font-weight: 500;
+      color: $label-color;
+    }
+  }
+}
+
+// Mobile group specific styling
+.mobile-input-group {
+  display: flex;
+  gap: 10px;
+  .country-code { width: 100px; }
+  .phone-number { flex: 1; }
+}
+
+// Deep Override for M3 Input Appearance
+::ng-deep {
+  .mat-mdc-form-field {
+    width: 100%;
+    
+    .mat-mdc-text-field-wrapper {
+      background-color: $input-bg !important;
+      border: 1px solid #e0e6ed !important;
+      border-radius: 8px !important;
+      padding-top: 0 !important;
+    }
+
+    // Hide the M3 bottom line to match the clean image look
+    .mdc-line-ripple { display: none; }
+    
+    .mat-mdc-form-field-flex { height: 48px; align-items: center; }
+    
+    .mat-mdc-select-value, .mat-mdc-input-element {
+      font-size: 14px;
+      color: #333 !important;
+    }
+  }
+}
+
+.section-divider {
+  border: 0;
+  border-top: 1px solid #eee;
+  margin: 32px 0;
+}
+
+.form-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+
+  button {
+    height: 44px;
+    padding: 0 32px;
+    font-weight: 500;
+    border-radius: 6px;
+  }
+
+  .btn-submit { background-color: $primary-blue !important; }
+  .btn-cancel { border-color: #ddd !important; color: #666; }
+}
