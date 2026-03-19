@@ -25,9 +25,28 @@ $female-pink: #ec4899;
 
 .patient-grid {
   display: grid;
-  // Grid: 3 columns for desktop, 1 or 2 for mobile
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 20px;
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .patient-grid {
+    grid-template-columns: repeat(3, 1fr); /* ✅ 3 cards */
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .patient-grid {
+    grid-template-columns: repeat(2, 1fr); /* ✅ 2 cards */
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .patient-grid {
+    grid-template-columns: 1fr; /* ✅ 1 card */
+  }
 }
 
 .patient-card {

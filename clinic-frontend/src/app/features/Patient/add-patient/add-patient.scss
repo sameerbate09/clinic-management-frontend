@@ -1,4 +1,4 @@
-// Custom Variables to match M3 Palette in the image
+// Custom Variables
 $bg-light: #f4f7fe;
 $label-color: #444;
 $input-bg: #f8faff;
@@ -35,25 +35,26 @@ $primary-blue: #2d62ed;
 }
 
 .form-section {
-  margin-bottom: 24px;
+  margin-bottom: 20px; // Slightly reduced from 24px
 
   .section-title {
     font-size: 18px;
     font-weight: 500;
-    margin-bottom: 20px;
+    margin-bottom: 16px; // Reduced from 20px
     color: #333;
   }
 }
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); // 2 columns as per image
-  gap: 20px 40px;
+  grid-template-columns: repeat(2, 1fr);
+  /* REDUCED GAPS: 12px vertical (row) and 24px horizontal (column) */
+  gap: 12px 24px; 
 
   .form-field {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px; // Reduced from 8px for a tighter label-to-input look
 
     label {
       font-size: 14px;
@@ -63,7 +64,6 @@ $primary-blue: #2d62ed;
   }
 }
 
-// Mobile group specific styling
 .mobile-input-group {
   display: flex;
   gap: 10px;
@@ -76,6 +76,11 @@ $primary-blue: #2d62ed;
   .mat-mdc-form-field {
     width: 100%;
     
+    /* REMOVE BOTTOM SUBSCRIPT SPACE: This is the primary cause of the large vertical gap */
+    .mat-mdc-form-field-subscript-wrapper {
+        display: none !important; 
+    }
+
     .mat-mdc-text-field-wrapper {
       background-color: $input-bg !important;
       border: 1px solid #e0e6ed !important;
@@ -83,10 +88,9 @@ $primary-blue: #2d62ed;
       padding-top: 0 !important;
     }
 
-    // Hide the M3 bottom line to match the clean image look
     .mdc-line-ripple { display: none; }
     
-    .mat-mdc-form-field-flex { height: 48px; align-items: center; }
+    .mat-mdc-form-field-flex { height: 44px; align-items: center; } // Reduced height slightly
     
     .mat-mdc-select-value, .mat-mdc-input-element {
       font-size: 14px;
@@ -98,13 +102,13 @@ $primary-blue: #2d62ed;
 .section-divider {
   border: 0;
   border-top: 1px solid #eee;
-  margin: 32px 0;
+  margin: 24px 0; // Reduced from 32px
 }
 
 .form-actions {
   display: flex;
   gap: 16px;
-  margin-top: 32px;
+  margin-top: 24px; // Reduced from 32px
 
   button {
     height: 44px;

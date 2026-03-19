@@ -1,9 +1,7 @@
 <mat-sidenav-container class="admin-container">
 
-  <mat-sidenav #sidenav class="sidebar"
-               [mode]="isMobile ? 'over' : 'side'"
-               [fixedInViewport]="isMobile"
-               [autoFocus]="false">
+  <mat-sidenav #sidenav class="sidebar" [mode]="isMobile ? 'over' : 'side'" [fixedInViewport]="isMobile"
+    [autoFocus]="false">
 
     <div class="logo-section">
       <mat-icon>medical_services</mat-icon>
@@ -52,9 +50,7 @@
       </div>
       <mat-icon>arrow_drop_down</mat-icon>
     </div> -->
-
   </mat-sidenav>
-
 
   <mat-sidenav-content class="main-content">
 
@@ -65,10 +61,12 @@
 
       <span class="spacer"></span>
 
-      <button mat-icon-button>
+      <button mat-icon-button matTooltip="Notifications">
         <mat-icon>notifications_none</mat-icon>
       </button>
-
+      <button mat-icon-button (click)="logout()" matTooltip="Logout">
+        <mat-icon>logout</mat-icon>
+      </button>
       <button mat-flat-button color="primary" class="add-patient-btn" routerLink="/add-patient">
         <mat-icon>add</mat-icon> Add Patient
       </button>
@@ -77,5 +75,4 @@
     <router-outlet></router-outlet>
 
   </mat-sidenav-content>
-
 </mat-sidenav-container>
