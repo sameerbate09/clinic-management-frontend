@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 // Material Imports
 import { MatCardModule } from '@angular/material/card';
@@ -38,14 +39,55 @@ import { ToastrService } from 'ngx-toastr';
 export class AddPatient {
 
   patientForm!: FormGroup;
+  patientId?: string;
+  isEditMode = false;
+  pageTitle = 'Add Patient';
+  actionLabel = 'Add Patient';
   private toastr = inject(ToastrService);
 
   constructor(
     private fb: FormBuilder,
     private patientService: PatientService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.initForm();
+  }
+
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (!id) {
+        return;
+      }
+
+      this.patientId = id;
+      this.isEditMode = true;
+      this.pageTitle = 'Edit Patient';
+      this.actionLabel = 'Update Patient';
+
+      this.patientService.getPatientById(id).subscribe({
+        next: (patient) => {
+          this.patientForm.patchValue({
+            name: patient.name,
+            gender: patient.gender?.toLowerCase(),
+            age: patient.age,
+            mobile: patient.mobile,
+            bloodGroup: patient.bloodGroup ?? '',
+            concern: (patient as any).concern ?? '',
+            address: {
+              street: patient.address?.street ?? '',
+              city: patient.address?.city ?? '',
+              pincode: patient.address?.pincode ?? ''
+            }
+          });
+        },
+        error: (err) => {
+          console.error('Error loading patient', err);
+          this.toastr.error('Failed to load patient details');
+        }
+      });
+    });
   }
 
   initForm() {
@@ -69,12 +111,25 @@ export class AddPatient {
     if (this.patientForm.invalid) return;
 
     const formValue = this.patientForm.value;
-
     formValue.gender = formValue.gender === 'male' ? 'Male' : 'Female';
 
     const request: CreatePatient = formValue;
-
     console.log('Payload:', request);
+
+    if (this.patientId) {
+      this.patientService.updatePatient(this.patientId, request).subscribe({
+        next: (res) => {
+          console.log('Update Success:', res);
+          this.toastr.success('Patient updated successfully');
+          this.router.navigate(['/patients-list']);
+        },
+        error: (err) => {
+          console.error('Update Error:', err);
+          this.toastr.error('Failed to update patient');
+        }
+      });
+      return;
+    }
 
     this.patientService.addPatient(request).subscribe({
       next: (res) => {

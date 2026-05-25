@@ -1,0 +1,65 @@
+<div class="details-dialog">
+    <div class="header">
+        <div>
+            <h2>Patient Details</h2>
+        </div>
+        <button mat-icon-button aria-label="Close dialog" (click)="close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <ng-container *ngIf="patient$ | async as patient; else loading">
+        <div class="patient-summary">
+            <div class="avatar-container" [ngClass]="patient.gender.toLowerCase().trim()">
+                <mat-icon>{{ patient.gender.toLowerCase().trim() === 'male' ? 'person' : 'face_3' }}</mat-icon>
+            </div>
+            <h3>{{ patient.name }}</h3>
+        </div>
+
+        <div class="section">
+            <h4>Primary Information</h4>
+            <div class="row">
+                <div class="info-card">
+                    <span class="label">Mobile</span>
+                    <p>{{ patient.mobile }}</p>
+                </div>
+                <div class="info-card">
+                    <span class="label">Age</span>
+                    <p>{{ patient.age }}</p>
+                </div>
+                <div class="info-card">
+                    <span class="label">Gender</span>
+                    <p>{{ patient.gender }}</p>
+                </div>
+                <div class="info-card">
+                    <span class="label">Blood Group</span>
+                    <p>{{ patient.bloodGroup || 'N/A' }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section address-section">
+            <h4>Address Information</h4>
+            <div class="address-card">
+                <span class="label">Address</span>
+                <div class="address-lines">
+                    <p>{{ patient.address?.street || 'Not available' }}</p>
+                    <p *ngIf="patient.address?.city">{{ patient.address?.city }}</p>
+                    <p *ngIf="patient.address?.pincode">{{ patient.address?.pincode }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button mat-stroked-button (click)="close()">Close</button>
+            <button mat-flat-button color="primary" [routerLink]="['/add-patient', patient.patientId]" (click)="close()">Edit Patient</button>
+        </div>
+    </ng-container>
+
+    <ng-template #loading>
+        <div class="loading-state">
+            <mat-icon class="loading-icon">hourglass_top</mat-icon>
+            <p>Loading patient details...</p>
+        </div>
+    </ng-template>
+</div>

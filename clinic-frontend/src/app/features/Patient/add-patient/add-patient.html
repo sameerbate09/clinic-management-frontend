@@ -3,7 +3,7 @@
         <div class="breadcrumb">
             <mat-icon (click)="goBack()" class="cursor-pointer">arrow_back</mat-icon>
             <span>
-                <a routerLink="/patients" class="link">Patients</a> / <b>Add Patient</b>
+                <a routerLink="/patients-list" class="link">Patients</a> / <b>{{ pageTitle }}</b>
             </span>
         </div>
     </div>
@@ -108,7 +108,7 @@
             <!-- Actions -->
             <div class="form-actions">
                 <button mat-flat-button color="primary" class="btn-submit" type="submit">
-                    Add Patient
+                    {{ actionLabel }}
                 </button>
 
                 <button mat-stroked-button class="btn-cancel" type="button" (click)="goBack()">

@@ -33,6 +33,12 @@ export const routes: Routes = [
             .then(m => m.AddPatient)
       },
       {
+        path: 'add-patient/:id',
+        loadComponent: () =>
+          import('./features/Patient/add-patient/add-patient')  
+            .then(m => m.AddPatient)
+      },
+      {
         path: 'patients-list',
         loadComponent: () =>
           import('./features/Patient/patient-list/patient-list')  
