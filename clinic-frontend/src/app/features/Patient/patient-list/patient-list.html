@@ -20,8 +20,8 @@
           </div>
 
           <div class="card-actions">
-            <button mat-stroked-button color="primary" class="action-btn">View Details</button>
-            <button mat-stroked-button class="action-btn">Edit</button>
+            <button mat-stroked-button color="primary" class="action-btn" (click)="openPatientDetails(patient.patientId || patient.id)">View Details</button>
+            <button mat-stroked-button class="action-btn" [routerLink]="['/add-patient', patient.patientId || patient.id]">Edit</button>
           </div>
         </mat-card-content>
       </mat-card>
