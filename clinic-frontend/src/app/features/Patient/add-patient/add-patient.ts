@@ -113,7 +113,19 @@ export class AddPatient {
     const formValue = this.patientForm.value;
     formValue.gender = formValue.gender === 'male' ? 'Male' : 'Female';
 
-    const request: CreatePatient = formValue;
+    const address = formValue.address;
+    const hasAddress = address && (address.street?.trim() || address.city?.trim() || address.pincode?.trim());
+
+    const request: CreatePatient = {
+      ...formValue,
+      address: hasAddress
+        ? {
+            street: address.street?.trim() ?? '',
+            city: address.city?.trim() ?? '',
+            pincode: address.pincode?.trim() ?? ''
+          }
+        : null
+    } as CreatePatient;
     console.log('Payload:', request);
 
     if (this.patientId) {

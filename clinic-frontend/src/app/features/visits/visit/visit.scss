@@ -1,0 +1,122 @@
+.visit-page {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  gap: 24px;
+  padding: 24px;
+}
+
+.visit-form-panel,
+.visit-list-panel {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 24px;
+  min-height: 320px;
+}
+
+.form-header {
+  margin-bottom: 24px;
+}
+
+.form-header h2 {
+  margin: 0 0 8px;
+  font-size: 1.5rem;
+}
+
+.form-header p {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.visit-form {
+  display: grid;
+  gap: 18px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.patient-option {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.patient-name {
+  font-weight: 600;
+}
+
+.patient-mobile {
+  font-size: 0.85rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.list-header h2 {
+  margin: 0;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.visit-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+mat-header-row,
+mat-row {
+  min-height: 56px;
+}
+
+.mat-header-cell,
+.mat-cell {
+  padding: 16px 12px;
+}
+
+.action-cell {
+  display: flex;
+  gap: 8px;
+}
+
+.empty-state {
+  margin-top: 18px;
+}
+
+.empty-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 32px 16px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.7);
+  border: 1px dashed rgba(0, 0, 0, 0.12);
+  border-radius: 16px;
+}
+
+.empty-card mat-icon {
+  font-size: 40px;
+  color: rgba(0, 0, 0, 0.34);
+}
+
+@media screen and (max-width: 960px) {
+  .visit-page {
+    grid-template-columns: 1fr;
+  }
+}
