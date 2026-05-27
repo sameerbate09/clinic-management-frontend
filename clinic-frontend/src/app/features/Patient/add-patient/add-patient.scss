@@ -47,14 +47,13 @@ $primary-blue: #2d62ed;
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  /* REDUCED GAPS: 12px vertical (row) and 24px horizontal (column) */
-  gap: 12px 24px; 
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 24px;
 
   .form-field {
     display: flex;
     flex-direction: column;
-    gap: 4px; // Reduced from 8px for a tighter label-to-input look
+    gap: 4px;
 
     label {
       font-size: 14px;
@@ -67,6 +66,8 @@ $primary-blue: #2d62ed;
 .mobile-input-group {
   display: flex;
   gap: 10px;
+  align-items: stretch;
+
   .country-code { width: 100px; }
   .phone-number { flex: 1; }
 }
@@ -119,4 +120,52 @@ $primary-blue: #2d62ed;
 
   .btn-submit { background-color: $primary-blue !important; }
   .btn-cancel { border-color: #ddd !important; color: #666; }
+}
+
+@media screen and (max-width: 860px) {
+  .form-container {
+    padding: 16px;
+  }
+
+  .form-card {
+    padding: 24px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mobile-input-group {
+    flex-direction: column;
+
+    .country-code,
+    .phone-number {
+      width: 100%;
+    }
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .form-card {
+    padding: 18px;
+  }
+
+  .form-actions {
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .header-section .breadcrumb {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
 }

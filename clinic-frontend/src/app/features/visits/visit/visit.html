@@ -43,10 +43,43 @@
       <div>
         <h2>All Visits</h2>
       </div>
+      <div class="list-toolbar">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search visits</mat-label>
+          <input matInput [formControl]="searchControl" placeholder="Search visits..." autocomplete="off" />
+          <button mat-icon-button matSuffix *ngIf="searchControl.value" (click)="searchControl.reset('')" aria-label="Clear search">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="sort-field">
+          <mat-label>Sort Date</mat-label>
+          <mat-select [formControl]="sortControl">
+            <mat-option value="newest">Newest first</mat-option>
+            <mat-option value="oldest">Oldest first</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="date-field">
+          <mat-label>From</mat-label>
+          <input matInput [matDatepicker]="fromPicker" [formControl]="startDateControl" placeholder="Choose a date" />
+          <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+          <mat-datepicker #fromPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="date-field">
+          <mat-label>To</mat-label>
+          <input matInput [matDatepicker]="toPicker" [formControl]="endDateControl" placeholder="Choose a date" />
+          <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+          <mat-datepicker #toPicker></mat-datepicker>
+        </mat-form-field>
+
+        <button mat-stroked-button type="button" (click)="clearFilters()">Clear filters</button>
+      </div>
     </div>
 
-    <div class="table-wrapper">
-      <table mat-table [dataSource]="(visits$ | async) || []" class="visit-table" aria-label="Visits table">
+    <div class="table-wrapper" *ngIf="pageVisits$ | async as pageVisits">
+      <table mat-table [dataSource]="pageVisits" class="visit-table" aria-label="Visits table">
 
         <ng-container matColumnDef="patient">
           <th mat-header-cell *matHeaderCellDef>Patient</th>
@@ -83,7 +116,34 @@
       </table>
     </div>
 
-    <div class="empty-state" *ngIf="(visits$ | async)?.length === 0">
+    <div class="pagination-bar" *ngIf="totalItems > 0">
+      <div class="pagination-info">
+        Showing {{ pageStart }} - {{ pageEnd }} of {{ totalItems }} visits
+      </div>
+
+      <div class="pagination-controls">
+        <button mat-icon-button [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+
+        <button mat-button *ngFor="let page of pages" [disabled]="currentPage === page" (click)="changePage(page)">
+          {{ page }}
+        </button>
+
+        <button mat-icon-button [disabled]="currentPage === pageCount" (click)="changePage(currentPage + 1)">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+
+        <mat-form-field appearance="outline" class="page-size-field">
+          <mat-label>Rows</mat-label>
+          <mat-select [value]="pageSize" (selectionChange)="changePageSize($event.value)">
+            <mat-option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="totalItems === 0">
       <div class="empty-card">
         <mat-icon>event_note</mat-icon>
         <p>No Visits Found</p>

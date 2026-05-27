@@ -7,9 +7,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { BehaviorSubject, startWith, map, tap } from 'rxjs';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, map, startWith, tap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { Patient, PatientService } from '../../../core/services/patient-service';
 import { CreateVisit, VisitRecord, VisitService } from '../../../core/services/visit-service';
@@ -26,8 +29,11 @@ import { CreateVisit, VisitRecord, VisitService } from '../../../core/services/v
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatSelectModule,
     MatTableModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   templateUrl: './visit.html',
   styleUrl: './visit.scss'
@@ -35,11 +41,28 @@ import { CreateVisit, VisitRecord, VisitService } from '../../../core/services/v
 export class Visit implements OnInit {
   visitForm!: FormGroup;
   patientControl = new FormControl<Patient | string>('', Validators.required);
+  searchControl = new FormControl('');
+  sortControl = new FormControl('newest');
+  dateRangeForm!: FormGroup;
   filteredPatients$ = new BehaviorSubject<Patient[]>([]);
   patients: Patient[] = [];
-  visits$ = new BehaviorSubject<VisitRecord[]>([]);
+
+  get startDateControl(): FormControl {
+    return this.dateRangeForm.get('startDate') as FormControl;
+  }
+
+  get endDateControl(): FormControl {
+    return this.dateRangeForm.get('endDate') as FormControl;
+  }
+  allVisits: VisitRecord[] = [];
+  pageVisits$ = new BehaviorSubject<VisitRecord[]>([]);
   selectedPatient: Patient | null = null;
   displayedColumns = ['patient', 'complaint', 'visitDate', 'action'];
+  pageSizeOptions = [10, 20];
+  pageSize = 10;
+  currentPage = 1;
+  totalItems = 0;
+  pageCount = 1;
 
   private fb = inject(FormBuilder);
   private patientService = inject(PatientService);
@@ -50,12 +73,18 @@ export class Visit implements OnInit {
     this.initForm();
     this.loadPatients();
     this.loadVisits();
+    this.subscribeFilters();
   }
 
   initForm(): void {
     this.visitForm = this.fb.group({
       complaint: ['', Validators.required],
       notes: ['']
+    });
+
+    this.dateRangeForm = this.fb.group({
+      startDate: [null],
+      endDate: [null]
     });
 
     this.patientControl.valueChanges.pipe(
@@ -68,6 +97,33 @@ export class Visit implements OnInit {
       map(value => (typeof value === 'string' ? value : value?.name ?? '')),
       map(value => this.filterPatients(value))
     ).subscribe(list => this.filteredPatients$.next(list));
+  }
+
+  subscribeFilters(): void {
+    this.searchControl.valueChanges.pipe(
+      startWith(''),
+      debounceTime(150),
+      distinctUntilChanged(),
+      tap(() => {
+        this.currentPage = 1;
+        this.applyFilters();
+      })
+    ).subscribe();
+
+    this.sortControl.valueChanges.pipe(
+      startWith(this.sortControl.value),
+      tap(() => {
+        this.currentPage = 1;
+        this.applyFilters();
+      })
+    ).subscribe();
+
+    this.dateRangeForm.valueChanges.pipe(
+      tap(() => {
+        this.currentPage = 1;
+        this.applyFilters();
+      })
+    ).subscribe();
   }
 
   loadPatients(): void {
@@ -84,7 +140,10 @@ export class Visit implements OnInit {
 
   loadVisits(): void {
     this.visitService.getVisits().subscribe({
-      next: visits => this.visits$.next(visits),
+      next: visits => {
+        this.allVisits = visits || [];
+        this.applyFilters();
+      },
       error: err => {
         console.error('Error loading visits', err);
       }
@@ -103,6 +162,91 @@ export class Visit implements OnInit {
         patient.mobile.toLowerCase().includes(filterValue)
       );
     });
+  }
+
+  applyFilters(): void {
+    let filtered = [...this.allVisits];
+    const searchValue = this.searchControl.value?.toLowerCase().trim() ?? '';
+    const { startDate, endDate } = this.dateRangeForm.value;
+
+    if (searchValue) {
+      filtered = filtered.filter(visit => {
+        const patientName = visit.patientName?.toLowerCase() ?? '';
+        const complaint = visit.complaint?.toLowerCase() ?? '';
+        const notes = visit.notes?.toLowerCase() ?? '';
+        const mobile = visit.mobile?.toLowerCase() ?? '';
+
+        return (
+          patientName.includes(searchValue) ||
+          complaint.includes(searchValue) ||
+          notes.includes(searchValue) ||
+          mobile.includes(searchValue)
+        );
+      });
+    }
+
+    if (startDate) {
+      const from = new Date(startDate);
+      filtered = filtered.filter(visit => {
+        const visitDate = visit.visitDate ? new Date(visit.visitDate) : null;
+        return visitDate ? visitDate >= from : false;
+      });
+    }
+
+    if (endDate) {
+      const to = new Date(endDate);
+      to.setHours(23, 59, 59, 999);
+      filtered = filtered.filter(visit => {
+        const visitDate = visit.visitDate ? new Date(visit.visitDate) : null;
+        return visitDate ? visitDate <= to : false;
+      });
+    }
+
+    filtered.sort((a, b) => {
+      const dateA = a.visitDate ? new Date(a.visitDate).getTime() : 0;
+      const dateB = b.visitDate ? new Date(b.visitDate).getTime() : 0;
+      return this.sortControl.value === 'oldest' ? dateA - dateB : dateB - dateA;
+    });
+
+    this.totalItems = filtered.length;
+    this.pageCount = Math.max(1, Math.ceil(this.totalItems / this.pageSize));
+    this.updatePage(filtered);
+  }
+
+  updatePage(filtered: VisitRecord[]): void {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    this.pageVisits$.next(filtered.slice(startIndex, startIndex + this.pageSize));
+  }
+
+  changePage(page: number): void {
+    this.currentPage = Math.min(Math.max(1, page), this.pageCount);
+    this.applyFilters();
+  }
+
+  changePageSize(size: number): void {
+    this.pageSize = size;
+    this.currentPage = 1;
+    this.applyFilters();
+  }
+
+  get pageStart(): number {
+    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1;
+  }
+
+  get pageEnd(): number {
+    return Math.min(this.totalItems, this.currentPage * this.pageSize);
+  }
+
+  get pages(): number[] {
+    return Array.from({ length: this.pageCount }, (_, i) => i + 1);
+  }
+
+  clearFilters(): void {
+    this.searchControl.reset('');
+    this.dateRangeForm.reset({ startDate: '', endDate: '' });
+    this.sortControl.setValue('newest');
+    this.currentPage = 1;
+    this.applyFilters();
   }
 
   displayPatient(patient: Patient | string): string {
@@ -126,8 +270,8 @@ export class Visit implements OnInit {
 
     this.visitService.addVisit(request).subscribe({
       next: () => {
-        // this.loadVisits();
         this.clearForm();
+        this.loadVisits();
         this.toastr.success('Visit saved successfully', 'Success');
       },
       error: err => {
